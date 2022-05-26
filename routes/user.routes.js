@@ -14,4 +14,6 @@ const router = express.Router();
 // HTTP petitions
 router.post("/", createUserValidation, checkValidations, createUser);
 
+router.post("login");
+
 module.exports = { usersRouter: router };

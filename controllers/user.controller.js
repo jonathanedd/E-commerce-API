@@ -17,4 +17,8 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
+const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+});
+
 module.exports = { createUser };
