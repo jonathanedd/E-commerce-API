@@ -28,7 +28,13 @@ const createProductValidation = [
   body("price")
     .notEmpty()
     .isFloat({ min: 0 })
-    .withMessage("please enter a price"),
+    .withMessage("please enter a price greater than 0"),
+  body("quantity")
+    .isInt({ min: 1 })
+    .withMessage("Please enter quantity greater than 1"),
+  body("categoryId")
+    .isInt({ min: 1 })
+    .withMessage("Must provide a valid category"),
 ];
 
 const checkValidations = (req, res, next) => {
@@ -44,4 +50,8 @@ const checkValidations = (req, res, next) => {
   next();
 };
 
-module.exports = { createUserValidation, checkValidations };
+module.exports = {
+  createUserValidation,
+  createProductValidation,
+  checkValidations,
+};

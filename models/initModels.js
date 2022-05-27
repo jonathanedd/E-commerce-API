@@ -22,6 +22,9 @@ Cart.belongsTo(User);
 Category.hasOne(Product);
 Product.belongsTo(Category);
 
+// Product.hasOne(Category);
+// Category.belongsTo(Product);
+
 Cart.hasMany(ProductsInCart);
 ProductsInCart.belongsTo(Cart);
 

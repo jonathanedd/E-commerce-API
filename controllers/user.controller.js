@@ -25,7 +25,7 @@ const createUser = catchAsync(async (req, res, next) => {
   newUser.password = undefined;
 
   res.status(200).json({
-    status: "success",
+    status: "Created!",
     newUser,
   });
 });
@@ -46,7 +46,7 @@ const login = catchAsync(async (req, res, next) => {
   user.password = undefined;
 
   res.status(200).json({
-    status: "success",
+    status: "logged in!",
     token,
     user,
   });
@@ -70,6 +70,36 @@ const updateUserProfile = catchAsync(async (req, res, next) => {
   await user.update({ userName, email });
 
   res.status(200).json({
+    status: "Updated!",
+  });
+});
+
+const deleteUserProfile = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  await user.update({
+    status: "Account deleted!",
+  });
+
+  res.status(200).json({
+    status: "Deleted!",
+  });
+});
+
+const getUserProducts = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "Success",
+  });
+});
+
+const getUserOrders = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+const getUserOrderById = catchAsync(async (req, res, next) => {
+  res.status(200).json({
     status: "success",
   });
 });
@@ -79,4 +109,8 @@ module.exports = {
   login,
   getAllUsers,
   updateUserProfile,
+  deleteUserProfile,
+  getUserProducts,
+  getUserOrders,
+  getUserOrderById,
 };

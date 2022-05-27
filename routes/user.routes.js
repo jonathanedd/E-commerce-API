@@ -15,6 +15,7 @@ const {
   login,
   getAllUsers,
   updateUserProfile,
+  deleteUserProfile,
 } = require("../controllers/user.controller");
 
 const router = express.Router();
@@ -30,5 +31,7 @@ router.use(protectToken);
 router.get("/", getAllUsers);
 
 router.patch("/:id", userExist, updateUserProfile);
+
+router.delete("/:id", userExist, deleteUserProfile);
 
 module.exports = { usersRouter: router };
