@@ -1,5 +1,8 @@
 const express = require("express");
 
+// Middlewares
+const { protectToken } = require("../middlewares/user.middleware");
+
 // Controllers
 const {
   createNewProduct,
@@ -15,8 +18,10 @@ router.get("/", getAllProducts);
 
 router.get("/:id", getProductById);
 
-// Here goes protectToken
+router.use(protectToken);
 
 router.post("/", createNewProduct);
 
 router.route("/:id").patch(UpdateProduct).delete(deleteProduct);
+
+module.exports = { productsRouter: router };

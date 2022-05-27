@@ -1,18 +1,21 @@
 const express = require("express");
 
-// Controllers
-const {
-  createUser,
-  login,
-  getAllUserProducts,
-  updateUserProfile,
-} = require("../controllers/user.controller");
+// Middlewares
+const { userExist, protectToken } = require("../middlewares/user.middleware");
 
 // Validations middleware
 const {
   createUserValidation,
   checkValidations,
 } = require("../middlewares/validations.middleware");
+
+// Controllers
+const {
+  createUser,
+  login,
+  getAllUsers,
+  updateUserProfile,
+} = require("../controllers/user.controller");
 
 const router = express.Router();
 
@@ -21,8 +24,11 @@ router.post("/", createUserValidation, checkValidations, createUser);
 
 router.post("/login", login);
 
-router.get("/me", getAllUserProducts);
+// ProtectToken
+router.use(protectToken);
 
-router.patch("/:id", updateUserProfile);
+router.get("/", getAllUsers);
+
+router.patch("/:id", userExist, updateUserProfile);
 
 module.exports = { usersRouter: router };

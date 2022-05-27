@@ -11,7 +11,7 @@ const protectToken = catchAsync(async (req, res, next) => {
 
   if (
     req.headers.authorization &&
-    req.headers.authorizatin.startsWith("Bearer")
+    req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
@@ -35,6 +35,19 @@ const protectToken = catchAsync(async (req, res, next) => {
   next();
 });
 
-const userExist = catchAsync(async (req, res, next) => {});
+const userExist = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findOne({
+    where: { id, status: "active" },
+    // Attributes
+  });
+
+  if (!user) {
+    return next(new AppError("User not found with Id", 404));
+  }
+
+  req.user = user;
+  next();
+});
 
 module.exports = { userExist, protectToken };

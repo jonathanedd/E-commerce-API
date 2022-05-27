@@ -22,6 +22,15 @@ const createUserValidation = [
     .withMessage("Password must contain at least one Uppercase"),
 ];
 
+const createProductValidation = [
+  body("title").notEmpty().withMessage("Please enter a product name"),
+  body("description").notEmpty().withMessage("Please enter a description"),
+  body("price")
+    .notEmpty()
+    .isFloat({ min: 0 })
+    .withMessage("please enter a price"),
+];
+
 const checkValidations = (req, res, next) => {
   const errors = validationResult(req);
 

@@ -3,9 +3,12 @@ const { Product } = require("../models/product.model");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 const { catchAsync } = require("../utils/catchAsync");
 const { AppError } = require("../utils/appError");
+
+dotenv.config({ path: "./config.env" });
 
 const createUser = catchAsync(async (req, res, next) => {
   const { userName, email, password } = req.body;
@@ -49,26 +52,31 @@ const login = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllUserProducts = catchAsync(async (req, res, next) => {
-  const products = await User.findAll({
-    // include: [{ model: Product, attributes: ["title", "price"] }],
+const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.findAll({
     attributes: { exclude: ["password"] },
   });
 
   res.status(200).json({
     status: "success",
-    products,
+    users,
   });
 });
+
 const updateUserProfile = catchAsync(async (req, res, next) => {
   const { user } = req;
-  const { username, email } = req.body;
+  const { userName, email } = req.body;
 
-  await user.Update({ username, email });
+  await user.update({ userName, email });
 
   res.status(200).json({
     status: "success",
   });
 });
 
-module.exports = { createUser, login, getAllUserProducts, updateUserProfile };
+module.exports = {
+  createUser,
+  login,
+  getAllUsers,
+  updateUserProfile,
+};

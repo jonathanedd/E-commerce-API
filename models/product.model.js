@@ -9,7 +9,7 @@ const Product = db.define("product", {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
-  tittle: {
+  title: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -35,7 +35,7 @@ const Product = db.define("product", {
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
+    defaultValue: "active",
   },
 });
 
