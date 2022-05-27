@@ -52,6 +52,7 @@ const login = catchAsync(async (req, res, next) => {
 const getAllUserProducts = catchAsync(async (req, res, next) => {
   const products = await User.findAll({
     // include: [{ model: Product, attributes: ["title", "price"] }],
+    attributes: { exclude: ["password"] },
   });
 
   res.status(200).json({
@@ -59,5 +60,15 @@ const getAllUserProducts = catchAsync(async (req, res, next) => {
     products,
   });
 });
+const updateUserProfile = catchAsync(async (req, res, next) => {
+  const { user } = req;
+  const { username, email } = req.body;
 
-module.exports = { createUser, login, getAllUserProducts };
+  await user.Update({ username, email });
+
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+module.exports = { createUser, login, getAllUserProducts, updateUserProfile };

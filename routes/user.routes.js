@@ -5,6 +5,7 @@ const {
   createUser,
   login,
   getAllUserProducts,
+  updateUserProfile,
 } = require("../controllers/user.controller");
 
 // Validations middleware
@@ -21,5 +22,7 @@ router.post("/", createUserValidation, checkValidations, createUser);
 router.post("/login", login);
 
 router.get("/me", getAllUserProducts);
+
+router.patch("/:id", updateUserProfile);
 
 module.exports = { usersRouter: router };
