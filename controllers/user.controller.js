@@ -50,8 +50,8 @@ const login = catchAsync(async (req, res, next) => {
 });
 
 const getAllUserProducts = catchAsync(async (req, res, next) => {
-  const products = await Product.findAll({
-    include: [{ model: Product, attributes: ["title"] }],
+  const products = await User.findAll({
+    // include: [{ model: Product, attributes: ["title", "price"] }],
   });
 
   res.status(200).json({
