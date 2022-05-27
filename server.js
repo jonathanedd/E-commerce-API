@@ -1,6 +1,7 @@
 const { app } = require("./app");
 
 // Init models
+const { initModels } = require("./models/initModels");
 
 // utils database
 const { db } = require("./utils/database");
@@ -9,6 +10,8 @@ const { db } = require("./utils/database");
 db.authenticate()
   .then(() => console.log("Database is Authenticated"))
   .catch((err) => console.log(err));
+
+initModels();
 
 // Sync db
 db.sync()
