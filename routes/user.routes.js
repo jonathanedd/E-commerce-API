@@ -16,6 +16,7 @@ const {
   getAllUsers,
   updateUserProfile,
   deleteUserProfile,
+  getUserProducts,
 } = require("../controllers/user.controller");
 
 const router = express.Router();
@@ -26,7 +27,9 @@ router.post("/", createUserValidation, checkValidations, createUser);
 router.post("/login", login);
 
 // ProtectToken
-router.use(protectToken);
+// router.use(protectToken);
+
+router.get("/me", getUserProducts);
 
 router.get("/", getAllUsers);
 

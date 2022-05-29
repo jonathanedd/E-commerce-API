@@ -87,8 +87,22 @@ const deleteUserProfile = catchAsync(async (req, res, next) => {
 });
 
 const getUserProducts = catchAsync(async (req, res, next) => {
+  const { sessionUser } = req;
+
+  const userProducts = await User.findAll({
+    where: { status: "active" },
+    attributes: { exclude: ["password"] },
+    include: [
+      {
+        model: Product,
+        attributes: { include: ["title"] },
+      },
+    ],
+  });
+
   res.status(200).json({
     status: "Success",
+    userProducts,
   });
 });
 
