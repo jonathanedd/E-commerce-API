@@ -27,7 +27,7 @@ router.post("/", createUserValidation, checkValidations, createUser);
 router.post("/login", login);
 
 // ProtectToken
-// router.use(protectToken);
+router.use(protectToken);
 
 router.get("/me", getUserProducts);
 

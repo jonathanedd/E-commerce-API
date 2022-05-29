@@ -87,8 +87,6 @@ const deleteUserProfile = catchAsync(async (req, res, next) => {
 });
 
 const getUserProducts = catchAsync(async (req, res, next) => {
-  const { sessionUser } = req;
-
   const userProducts = await User.findAll({
     where: { status: "active" },
     attributes: { exclude: ["password"] },
