@@ -90,11 +90,11 @@ const deleteUserProfile = catchAsync(async (req, res, next) => {
 const getUserProducts = catchAsync(async (req, res, next) => {
   const userProducts = await User.findAll({
     where: { status: "active" },
-    attributes: { exclude: ["password"] },
+    attributes: { exclude: ["email", "password", "createdAt", "updatedAt"] },
     include: [
       {
         model: Product,
-        attributes: { include: ["title"] },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
       },
     ],
   });
