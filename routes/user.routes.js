@@ -21,6 +21,8 @@ const {
   updateUserProfile,
   deleteUserProfile,
   getUserProducts,
+  getUserOrders,
+  getUserOrderById,
 } = require("../controllers/user.controller");
 
 const router = express.Router();
@@ -40,5 +42,9 @@ router.get("/", getAllUsers);
 router.patch("/:id", userExist, protectAccountOwner, updateUserProfile);
 
 router.delete("/:id", userExist, protectAccountOwner, deleteUserProfile);
+
+router.get("orders", getUserOrders);
+
+router.get("/orders/:id", getUserOrderById);
 
 module.exports = { usersRouter: router };
