@@ -11,7 +11,7 @@ const { AppError } = require("../utils/appError");
 dotenv.config({ path: "./config.env" });
 
 const createUser = catchAsync(async (req, res, next) => {
-  const { userName, email, password } = req.body;
+  const { userName, email, password, role } = req.body;
 
   const salt = await bcrypt.genSalt(12);
   const hashPassword = await bcrypt.hash(password, salt);
@@ -20,6 +20,7 @@ const createUser = catchAsync(async (req, res, next) => {
     userName,
     email,
     password: hashPassword,
+    role,
   });
 
   newUser.password = undefined;

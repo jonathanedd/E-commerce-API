@@ -1,7 +1,11 @@
 const express = require("express");
 
 // Middlewares
-const { userExist, protectToken } = require("../middlewares/user.middleware");
+const {
+  userExist,
+  protectToken,
+  protectAccountOwner,
+} = require("../middlewares/user.middleware");
 
 // Validations middleware
 const {
@@ -33,8 +37,8 @@ router.get("/me", getUserProducts);
 
 router.get("/", getAllUsers);
 
-router.patch("/:id", userExist, updateUserProfile);
+router.patch("/:id", userExist, protectAccountOwner, updateUserProfile);
 
-router.delete("/:id", userExist, deleteUserProfile);
+router.delete("/:id", userExist, protectAccountOwner, deleteUserProfile);
 
 module.exports = { usersRouter: router };
