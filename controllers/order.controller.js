@@ -5,9 +5,8 @@ const { Product } = require("../models/product.model");
 
 const { catchAsync } = require("../utils/catchAsync");
 const { AppError } = require("../utils/appError");
-const { password } = require("pg/lib/defaults");
 
-const addProductToCart = catchAsync(async (req, res, next) => {
+const addUserCart = catchAsync(async (req, res, next) => {
   const { sessionUser } = req;
 
   const userHasCart = await Cart.findOne({
@@ -21,21 +20,25 @@ const addProductToCart = catchAsync(async (req, res, next) => {
   });
 
   if (!userHasCart) {
-    await Cart.create({ userId: sessionUser.id });
+    const createCart = await Cart.create({ userId: sessionUser.id });
+
+    res.status(200).json({
+      status: "Added",
+      userHasCart: createCart,
+    });
+  } else {
+    return next(new AppError("you already have one cart Active", 403));
   }
-
-  
-
-  res.status(200).json({
-    status: "Added",
-    userHasCart,
-  });
 });
+
+const addProductToCart = catchAsync(async (req, res, next) => {});
+
 const updateProductToCart = catchAsync(async (req, res, next) => {});
 const purchaseCart = catchAsync(async (req, res, next) => {});
 const deleteProductToCart = catchAsync(async (req, res, next) => {});
 
 module.exports = {
+  addUserCart,
   addProductToCart,
   updateProductToCart,
   purchaseCart,

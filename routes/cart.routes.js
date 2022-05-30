@@ -6,6 +6,7 @@ const {
   updateProductToCart,
   purchaseCart,
   deleteProductToCart,
+  addUserCart,
 } = require("../controllers/order.controller");
 
 // Middlewares
@@ -16,6 +17,7 @@ router = express.Router();
 router.use(protectToken);
 
 //HTTP Petitions
+router.post("/add-cart", addUserCart);
 router.post("/add-product", addProductToCart);
 
 router.patch("/update-cart", updateProductToCart);
