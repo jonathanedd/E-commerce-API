@@ -28,4 +28,8 @@ const protectProductOwner = catchAsync(async (req, res, next) => {
   next();
 });
 
-module.exports = { productExist, protectProductOwner };
+module.exports = {
+  productExist,
+  protectProductOwner,
+  // protectUserSessionProducts,
+};

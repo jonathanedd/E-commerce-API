@@ -6,7 +6,7 @@ const {
   updateProductToCart,
   purchaseCart,
   deleteProductToCart,
-} = require("../controllers/cart.controller");
+} = require("../controllers/order.controller");
 
 // Middlewares
 

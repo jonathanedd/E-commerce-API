@@ -15,7 +15,7 @@ const Cart = db.define("cart", {
   },
   status: {
     type: DataTypes.STRING,
-    allowNull: false,
+    defaultValue: "active",
   },
 });
 

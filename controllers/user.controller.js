@@ -1,5 +1,7 @@
 const { User } = require("../models/user.model");
 const { Product } = require("../models/product.model");
+const { Cart } = require("../models/cart.model");
+const { Order } = require("../models/order.model");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -88,8 +90,10 @@ const deleteUserProfile = catchAsync(async (req, res, next) => {
 });
 
 const getUserProducts = catchAsync(async (req, res, next) => {
+  const { sessionUser } = req;
+
   const userProducts = await User.findAll({
-    where: { status: "active" },
+    where: { status: "active", id: sessionUser.id },
     attributes: { exclude: ["email", "password", "createdAt", "updatedAt"] },
     include: [
       {
@@ -106,8 +110,18 @@ const getUserProducts = catchAsync(async (req, res, next) => {
 });
 
 const getUserOrders = catchAsync(async (req, res, next) => {
+  const { sessionUser } = req;
+  const userOrders = await Order.findAll({
+    where: { status: "active", userId: sessionUser.id },
+    include: [
+      {
+        model: Cart,
+      },
+    ],
+  });
   res.status(200).json({
     status: "success",
+    userOrders,
   });
 });
 
