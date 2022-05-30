@@ -7,6 +7,7 @@ const { globalErrorHandler } = require("./controllers/errors.controller");
 const { usersRouter } = require("./routes/user.routes");
 const { productsRouter } = require("./routes/product.routes");
 const { categoriesRouter } = require("./routes/category.routes");
+const { cartRouter } = require("./routes/cart.routes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/v4/users", usersRouter);
 app.use("/api/v4/products", productsRouter);
 app.use("/api/v4/categories", categoriesRouter);
+app.use("/api/v4/cart", cartRouter);
 
 app.use("*", globalErrorHandler);
 

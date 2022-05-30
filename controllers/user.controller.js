@@ -126,8 +126,23 @@ const getUserOrders = catchAsync(async (req, res, next) => {
 });
 
 const getUserOrderById = catchAsync(async (req, res, next) => {
+  const { order } = req;
+  const { sessionUser } = req;
+
+  const orderById = await Order.findAll({
+    where: { status: "purchased", sessionUser },
+    include: [
+      {
+        model: Cart,
+        
+      }
+    ]
+  });
+
   res.status(200).json({
     status: "success",
+    order,
+    orderById,
   });
 });
 

@@ -6,14 +6,17 @@ const { AppError } = require("../utils/appError");
 
 const userCartExist = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-
-  const { user } = req;
-
-  const activeCart = await Cart.findOne({
-    where: { status: "active" },
+  const cart = await Cart.findOne({
+    where: { id, status: "active" },
   });
 
-  return next(new AppError("You already have one Cart active", 403));
+  if (!cart) {
+    return next(new AppError("No cart found with Id ", 403));
+  }
+
+  req.cart = cart;
+
+  next();
 });
 
 module.exports = { userCartExist };

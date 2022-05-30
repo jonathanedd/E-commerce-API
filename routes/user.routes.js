@@ -24,6 +24,7 @@ const {
   getUserOrders,
   getUserOrderById,
 } = require("../controllers/user.controller");
+const { orderExist } = require("../middlewares/order.middleware");
 
 const router = express.Router();
 
@@ -45,6 +46,6 @@ router.delete("/:id", userExist, protectAccountOwner, deleteUserProfile);
 
 router.get("/orders", getUserOrders);
 
-router.get("/orders/:id", getUserOrderById);
+router.get("/orders/:id", orderExist, getUserOrderById);
 
 module.exports = { usersRouter: router };

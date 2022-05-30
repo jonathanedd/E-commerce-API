@@ -9,8 +9,11 @@ const {
 } = require("../controllers/order.controller");
 
 // Middlewares
+const { protectToken } = require("../middlewares/user.middleware");
 
 router = express.Router();
+
+router.use(protectToken);
 
 //HTTP Petitions
 router.post("/add-product", addProductToCart);
