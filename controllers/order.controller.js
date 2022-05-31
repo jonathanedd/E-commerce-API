@@ -6,7 +6,10 @@ const { Product } = require("../models/product.model");
 const { catchAsync } = require("../utils/catchAsync");
 const { AppError } = require("../utils/appError");
 
-const addUserCart = catchAsync(async (req, res, next) => {
+const addUserCart = catchAsync(async (req, res, next) => {});
+
+const addProductToCart = catchAsync(async (req, res, next) => {
+  const { productId, quantity } = req.body;
   const { sessionUser } = req;
 
   const userHasCart = await Cart.findOne({
@@ -24,14 +27,34 @@ const addUserCart = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
       status: "Added",
-      userHasCart: createCart,
+      findProduct,
+      createCart,
     });
   } else {
-    return next(new AppError("you already have one cart Active", 403));
+    const addProduct = await ProductsInCart.create({
+      cartId: userHasCart.id,
+      productId,
+      quantity,
+    });
+
+    const findProduct = await ProductsInCart.findAll({
+      where: { status: "active" },
+      include: [
+        {
+          model: Product,
+          attributes: {
+            exclude: ["categoryId", "userId", "createdAt", "updatedAt"],
+          },
+        },
+      ],
+    });
+
+    res.status(200).json({
+      status: "Product added to cart",
+      findProduct,
+    });
   }
 });
-
-const addProductToCart = catchAsync(async (req, res, next) => {});
 
 const updateProductToCart = catchAsync(async (req, res, next) => {});
 const purchaseCart = catchAsync(async (req, res, next) => {});
