@@ -54,8 +54,12 @@ const addProductToCart = catchAsync(async (req, res, next) => {
       where: { status: "active" },
     });
 
-    if (productInCart.quantity > productExist.quantity) {
-      next(new AppError("Product is Sold Out", 400));
+    if (!productExist) {
+      return next(new AppError("Invalid product", 404));
+    } else if (productInCart.quantity > productExist.quantity) {
+      next(
+        new AppError(`This product only has ${productExist.quantity} units`)
+      );
     }
 
     res.status(200).json({
@@ -108,9 +112,70 @@ const addProductToCart = catchAsync(async (req, res, next) => {
   // }
 });
 
-const updateProductToCart = catchAsync(async (req, res, next) => {});
-const purchaseCart = catchAsync(async (req, res, next) => {});
-const deleteProductToCart = catchAsync(async (req, res, next) => {});
+//--------
+
+const updateProductToCart = catchAsync(async (req, res, next) => {
+  const { productId, newQty } = req.body;
+
+  const { sessionUser } = req;
+
+  const userCart = await Cart.findOne({
+    where: { userId: sessionUser.id, status: "active" },
+    include: [
+      {
+        model: ProductsInCart,
+      },
+    ],
+  });
+
+  const productInCart = await ProductsInCart.findOne({
+    where: { status: "active", cartId: userCart.id, productId },
+    include: [
+      {
+        model: Product,
+      },
+    ],
+  });
+
+  if (!productInCart) {
+    return next(new AppError("Product is not in your cart", 404));
+  }
+
+  if (newQty < 0 || newQty > productInCart.product.quantity) {
+    return next(
+      new AppError(
+        `There are only ${productInCart.product.quantity} units available`,
+        400
+      )
+    );
+  }
+
+  if (newQty === 0) {
+    await productInCart.update({ quantity: 0, status: "removed" });
+  } else if (newQty > 0) {
+    await productInCart.update({
+      quantity: newQty,
+    });
+  }
+  res.status(200).json({
+    status: "Cart udapted",
+    productInCart,
+  });
+});
+
+//--------
+
+const purchaseCart = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+const deleteProductToCart = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+  });
+});
 
 module.exports = {
   addUserCart,
