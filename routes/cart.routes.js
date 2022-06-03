@@ -21,7 +21,8 @@ router.post("/add-cart", addUserCart);
 router.post("/add-product", addProductToCart);
 
 router.patch("/update-cart", updateProductToCart);
-router.post("/purchase", purchaseCart);
 router.delete("/:productId", deleteProductToCart);
+router.post("/purchase", purchaseCart);
+
 
 module.exports = { cartRouter: router };
